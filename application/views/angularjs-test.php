@@ -1,3 +1,4 @@
+<script src="<?= base_url('assets/js/angularjs/angularjs-1.5.8.min.js')?>"></script>
 <div ng-app="myApp">
  <div ng-controller = "myCtrl">
          <input type = "file" file-model = "myFile"/>
@@ -61,7 +62,7 @@
 
 </div>
 
-<script src="<?= base_url('assets/js/angularjs/angularjs-1.5.8.min.js')?>"></script>
+
 
 
 
