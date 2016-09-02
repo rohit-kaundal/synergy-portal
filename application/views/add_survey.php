@@ -1,8 +1,12 @@
 <!-- add survey //-->
+<script src="<?= base_url('assets/js/angularjs/angularjs-1.5.8.min.js')?>"></script>
+<!-- angularjs module for survey -->
+
 <div class="panel panel-primary panel-shadow">
 	<div class="panel-heading">
 		<div class="panel-title">
 			<h3><i class="entypo-clipboard"></i>Add Survey</h3>
+			
 		</div>
 		
 	</div>
@@ -108,11 +112,43 @@
 																			
 							<div class="form-group">
 								<button type="submit" class="btn btn-primary">Save Survey</button>
+								
 							</div>
 						
 						
 				</form>
-			
+				<!-- put in edit survey 
+				<button class="btn btn-success" data-toggle="modal" data-target="#modal-survey">Add Questions</button>
+				
+				
+				
+
+	<div class="modal fade" id="modal-survey" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Survey</h4>
+				</div>
+				
+				<div class="modal-body">
+				
+						<h3> Survey questions</h3>
+				</div>
+				
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-info">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="<?= base_url('assets/js/fileinput.js')?>" type="text/javascript"></script>
+		
+				
+				//-->
 		</div>
 	</div>	
 </div>
+
