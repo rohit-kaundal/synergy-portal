@@ -478,6 +478,69 @@ class Dashboard extends CI_Controller {
 		redirect(site_url('dashboard/edit_campaign'), 'refresh');
 		
 	}
+	
+	
+	
+	/**
+	* Survey Related Routes
+	* 
+	* @return
+	*/
+	
+		// Campaing routes
+
+	public function add_survey()
+	{
+		// Give auth wall
+		$this->userauth->check_login();
+		
+		$this->load->view('admin_header', ['title'=>'Add Survey']);
+		$this->load->view('add_survey');
+		$this->load->view('admin_footer');
+
+	}
+	
+	public function edit_survey($id = 0)
+	{
+		// Give auth wall
+		$this->userauth->check_login();
+		
+		if($id > 0){
+			$this->load->view('admin_header', ['title'=>'Edit survey', 'id' => $id]);
+			$this->load->view('single_survey');
+			$this->load->view('admin_footer');
+	
+		}else{
+			$this->load->view('admin_header', ['title'=>'Survey List']);
+			$this->load->view('edit_survey');
+			$this->load->view('admin_footer');
+
+		}
+		
+		
+	}
+	
+	public function delete_survey($id = 0){
+		
+		// Give auth wall
+		$this->userauth->check_login();
+		
+		if($id > 0){
+			// load deletion view
+			$this->survey_model->id = $id;
+			$result = $this->survey_model->delete_record();
+			if($result){
+				$this->session->set_flashdata('msg', 'Success!!!');
+			}else{
+				$this->session->set_flashdata('err', 'Error deleting record!');
+			}
+			
+		}
+		redirect(site_url('dashboard/edit_campaign'), 'refresh');
+		
+	}
+
+	
 
 	public function change_pic(){
 		
@@ -497,6 +560,10 @@ class Dashboard extends CI_Controller {
 		$this->load->view('angularjs-test');
 		$this->load->view('admin_footer');
 	}
+	
+	
+	
+	
 
 }
 

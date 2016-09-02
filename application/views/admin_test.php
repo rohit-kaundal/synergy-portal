@@ -2,9 +2,7 @@
 
 	echo '<pre>';
 	
-		$camp = $this->campaign_model->get_campaign(6);
-		print_r($camp);//*$camp = $this->campaign_model->get_campaign(6);
-		print_r($camp);
+		print_r($_SESSION);
 	
 	echo '</pre>';
 	
