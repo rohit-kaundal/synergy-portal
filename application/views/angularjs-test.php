@@ -52,7 +52,7 @@
                console.log('file is ' );
                console.dir(file);
                
-               var uploadUrl = "../assets/file_upload";
+               var uploadUrl = "sitfile_upload";
                fileUpload.uploadFileToUrl(file, uploadUrl);
             };
          }]);
