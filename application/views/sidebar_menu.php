@@ -182,12 +182,12 @@
 							</a>
 							<ul>
 								<li>
-									<a href="">
+									<a href="<?= site_url('dashboard/add_survey')?>">
 										<span class="title">Create survey</span>
 									</a>
 								</li>
 								<li>
-									<a href="">
+									<a href="<?= site_url('dashboard/edit_survey')?>">
 										<span class="title">Update survey</span>
 									</a>
 								</li>

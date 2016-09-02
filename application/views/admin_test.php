@@ -1,10 +1,8 @@
 <?php
 
 	echo '<pre>';
-	
-		$camp = $this->campaign_model->get_campaign(6);
-		print_r($camp);//*$camp = $this->campaign_model->get_campaign(6);
-		print_r($camp);
+		$survey = $this->survey_model->get_record_list();
+		print_r($survey);
 	
 	echo '</pre>';
 	

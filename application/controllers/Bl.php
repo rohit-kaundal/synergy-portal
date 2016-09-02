@@ -3,12 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Bl extends CI_Controller
 {
+	private $userid;
+	
 	function __construct()
 	{
 		parent::__construct();
 
 		// Load logged in userid
-		$userid = ($this->session->has_userdata('user_id') ? $this->session->userdata('user_id') : 1);
+		$this->userid = ($this->session->has_userdata('user_id') ? $this->session->userdata('user_id') : 1);
 	}
 
 	function index()
@@ -81,7 +83,7 @@ class Bl extends CI_Controller
 		{
 			// fetch data into variables
 		
-			$uid = (!empty($userid) ? $userid : 1);
+			$uid = (!empty($this->userid) ? $this->userid : 1);
 
 			// set form rules
 			$this->form_validation->set_rules('password','Password', 'required');
@@ -130,7 +132,7 @@ class Bl extends CI_Controller
 
 		//if not empty
 		if($postdata && !empty($postdata)){
-			$uid = (!empty($userid) ? $userid : 1);
+			$uid = (!empty($this->userid) ? $this->userid : 1);
 			
 			// set form rules
 			$this->form_validation->set_rules('username','Username/Email', 'required');
@@ -201,7 +203,7 @@ class Bl extends CI_Controller
 
 		//if not empty
 		if($postdata && !empty($postdata)){
-			$uid = (!empty($userid) ? $userid : 1);
+			$uid = (!empty($this->userid) ? $this->userid : 1);
 			
 			// set form rules
 			//$this->form_validation->set_rules('username','Username/Email', 'required');
@@ -285,7 +287,7 @@ class Bl extends CI_Controller
 			$title = $this->input->post('role_title');
 			$desc = $this->input->post('role_description');
 
-			$uid = (!empty($userid) ? $userid : 1);
+			$uid = (!empty($this->userid) ? $this->userid : 1);
 
 			// set form rules
 			$this->form_validation->set_rules('role_title','Role Title', 'required');
@@ -334,7 +336,7 @@ class Bl extends CI_Controller
 			$title = $this->input->post('role_title');
 			$desc = $this->input->post('role_description');
 
-			$uid = (!empty($userid) ? $userid : 1);
+			$uid = (!empty($this->userid) ? $this->userid : 1);
 
 			// set form rules
 			$this->form_validation->set_rules('role_title','Role Title', 'required');
@@ -387,7 +389,7 @@ class Bl extends CI_Controller
 			$title = $this->input->post('district_title');
 			$state = $this->input->post('state');
 
-			$uid = (!empty($userid) ? $userid : 1);
+			$uid = (!empty($this->userid) ? $this->userid : 1);
 
 			// set form rules
 			$this->form_validation->set_rules('district_title','District Title', 'required');
@@ -440,7 +442,7 @@ class Bl extends CI_Controller
 			$title = $this->input->post('district_title');
 			$state = $this->input->post('state');
 
-			$uid = (!empty($userid) ? $userid : 1);
+			$uid = (!empty($this->userid) ? $this->userid : 1);
 
 			// set form rules
 			$this->form_validation->set_rules('district_title','District Title', 'required');
@@ -523,7 +525,7 @@ class Bl extends CI_Controller
 			$district = $this->input->post('district');
 			$title = $this->input->post('block_title');
 
-			$uid = (!empty($userid) ? $userid : 1);
+			$uid = (!empty($this->userid) ? $this->userid : 1);
 
 			// set form rules
 			$this->form_validation->set_rules('district','Disrict', 'required');
@@ -581,7 +583,7 @@ class Bl extends CI_Controller
 			$district = $this->input->post('district');
 			$title = $this->input->post('block_title');
 
-			$uid = (!empty($userid) ? $userid : 1);
+			$uid = (!empty($this->userid) ? $this->userid : 1);
 
 			// set form rules
 			$this->form_validation->set_rules('district','Disrict', 'required');
@@ -639,7 +641,7 @@ class Bl extends CI_Controller
 			$company_addr = $this->input->post('company_addr');
 			
 
-			$uid = (!empty($userid) ? $userid : 1);
+			$uid = (!empty($this->userid) ? $this->userid : 1);
 
 			// set form rules
 			$this->form_validation->set_rules('company_title','Company Title', 'required');
@@ -694,7 +696,7 @@ class Bl extends CI_Controller
 			$company_addr = $this->input->post('company_addr');
 			
 
-			$uid = (!empty($userid) ? $userid : 1);
+			$uid = (!empty($this->userid) ? $this->userid : 1);
 
 			// set form rules
 			$this->form_validation->set_rules('company_title','Company Title', 'required');
@@ -756,7 +758,7 @@ class Bl extends CI_Controller
 			$uom2 = $this->input->post('uom2');
 			$uom2_value = floatval($this->input->post('uom2_value'));
 
-			$uid = (!empty($userid) ? $userid : 1);
+			$uid = (!empty($this->userid) ? $this->userid : 1);
 
 			// set form rules
 			$this->form_validation->set_rules('state','State', 'required');
@@ -822,7 +824,7 @@ class Bl extends CI_Controller
 			$uom2 = $this->input->post('uom2');
 			$uom2_value = floatval($this->input->post('uom2_value'));
 
-			$uid = (!empty($userid) ? $userid : 1);
+			$uid = (!empty($this->userid) ? $this->userid : 1);
 
 			// set form rules
 			$this->form_validation->set_rules('state','State', 'required');
@@ -890,7 +892,7 @@ class Bl extends CI_Controller
 		{
 			// fetch data into variables
 			
-			 $uid = (!empty($userid) ? $userid : 1);
+			 $uid = (!empty($this->userid) ? $this->userid : 1);
 			 
 			 $this->campaign_model->id = 0;
 			 $this->campaign_model->survey_id = $postdata['survey_id'];
@@ -962,7 +964,7 @@ class Bl extends CI_Controller
 		{
 			// fetch data into variables
 			
-			 $uid = (!empty($userid) ? $userid : 1);
+			 $uid = (!empty($this->userid) ? $this->userid : 1);
 			 
 			 $this->campaign_model->id = $postdata['_id'];
 			 $this->campaign_model->survey_id = $postdata['survey_id'];
@@ -988,6 +990,77 @@ class Bl extends CI_Controller
 						//set success msgs 
 					$this->session->set_flashdata('msg', 'Success!!!');
 					$this->session->set_flashdata('msgbox', 'Campaign  with id '. $id . " added successfully !" );
+					
+				}else{
+					$this->session->set_flashdata('err', "Error adding records !");
+				}
+				
+			}else{
+				//get errors
+				$errors = $this->form_validation->error_array();
+
+				// save it to show them on form
+				$this->session->set_flashdata('err', $errors);
+			}
+
+		}
+
+		// redirect finally to the url	
+		redirect($url);
+
+	}
+	
+	public function add_survey()
+	{
+		/*// Give auth wall
+		$this->userauth->check_login();	
+		echo('<pre>');
+		print_r($_POST);
+		echo('</pre>');*/
+		
+		
+		
+		
+		// Give auth wall
+		$this->userauth->check_login();	
+	
+	
+		// Set redirection url
+		$url = site_url('dashboard/add_survey');
+
+		// fetch post data
+		$postdata = $this->input->post();				
+				
+				
+		//if not empty
+		if($postdata && !empty($postdata))
+		{
+			// fetch data into variables
+			
+			 $uid = (!empty($this->userid) ? $this->userid : 1);
+			 
+			 $this->survey_model->id = 0;
+			 $this->survey_model->title = $postdata['title'];
+			 $this->survey_model->description = $postdata['description'];
+			 $this->survey_model->keywords = $postdata['keywords'];
+			 $this->survey_model->created_by = $uid;			
+
+			// set form rules
+			$this->form_validation->set_rules('title','Survey', 'required');
+			$this->form_validation->set_rules('description','Description', 'required');
+			$this->form_validation->set_rules('keywords','Keywords', 'required');
+						
+
+			// validate form
+			if($this->form_validation->run() != FALSE)
+			{
+				//save data
+				$id = $this->survey_model->save();
+				
+				if($id){
+						//set success msgs 
+					$this->session->set_flashdata('msg', 'Success!!!');
+					$this->session->set_flashdata('msgbox', 'Survey  with id '. $id . " added successfully !" );
 					
 				}else{
 					$this->session->set_flashdata('err', "Error adding records !");
