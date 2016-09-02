@@ -27,7 +27,7 @@ class Survey_model extends CI_Model {
 						->get(self::tblName);
 			$data = $query->result_object();
 			if($data){
-				$obj = new Campaign_model();
+				$obj = new Survey_model();
 				$data = $data[0];
 				
 				$obj->id = $data->id;
