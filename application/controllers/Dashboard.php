@@ -536,7 +536,7 @@ class Dashboard extends CI_Controller {
 			}
 			
 		}
-		redirect(site_url('dashboard/edit_campaign'), 'refresh');
+		redirect(site_url('dashboard/edit_survey'), 'refresh');
 		
 	}
 
