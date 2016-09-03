@@ -1080,5 +1080,70 @@ class Bl extends CI_Controller
 		redirect($url);
 
 	}
+	
+	public function edit_survey()
+	{
+		
+		
+		
+		// Give auth wall
+		$this->userauth->check_login();	
+	
+	
+		// Set redirection url
+		$url = site_url('dashboard/edit_survey');
+
+		// fetch post data
+		$postdata = $this->input->post();				
+				
+				
+		//if not empty
+		if($postdata && !empty($postdata))
+		{
+			// fetch data into variables
+			
+			 $uid = (!empty($this->userid) ? $this->userid : 1);
+			 
+			 $this->survey_model->id = $postdata['_id'];
+			 $this->survey_model->title = $postdata['title'];
+			 $this->survey_model->description = $postdata['description'];
+			 $this->survey_model->keywords = $postdata['keywords'];
+			 $this->survey_model->created_by = $uid;			
+
+			// set form rules
+			$this->form_validation->set_rules('title','Survey', 'required');
+			$this->form_validation->set_rules('description','Description', 'required');
+			$this->form_validation->set_rules('keywords','Keywords', 'required');
+						
+
+			// validate form
+			if($this->form_validation->run() != FALSE)
+			{
+				//save data
+				$id = $this->survey_model->save();
+				
+				if($id){
+						//set success msgs 
+					$this->session->set_flashdata('msg', 'Success!!!');
+					$this->session->set_flashdata('msgbox', 'Survey  with id '. $id . " updated successfully !" );
+					
+				}else{
+					$this->session->set_flashdata('err', "Error adding records !");
+				}
+				
+			}else{
+				//get errors
+				$errors = $this->form_validation->error_array();
+
+				// save it to show them on form
+				$this->session->set_flashdata('err', $errors);
+			}
+
+		}
+
+		// redirect finally to the url	
+		redirect($url);
+		
+	}
 
 }
