@@ -46,6 +46,29 @@ class Api extends REST_Controller{
 	}
 	
 	
+	/**
+	* Login api implemented
+	*/
+	function login_post(){
+		
+		$username = $this->post('login');
+		$password = $this->post('pwd');
+		
+		
+		if(!$username && !$password){
+			$this->response(["Invalid credentials"], 400);
+		}
+		
+		$user = $this->userlogin_model->check_login($username,$password);
+		if($user){
+			$this->response($user,200);
+		}else{
+			$this->response(["Invalid ID/Password!"], 400);
+		}
+		
+	}
+	
+	
 	
 }
 
