@@ -7,7 +7,7 @@ class Api extends REST_Controller{
 	/**
 	* Users api
 	*/
-	function users_get()
+	/*function users_get()
 	{
 		$id = $this->get('id');
 		if($id){
@@ -43,7 +43,7 @@ class Api extends REST_Controller{
 		}else{
 			$this->response(["Invalid ID"], 400);
 		}
-	}
+	}*/
 	
 	
 	/**
