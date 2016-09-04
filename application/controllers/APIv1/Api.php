@@ -28,6 +28,25 @@ class Api extends REST_Controller{
 			
 		}
 	}
+	
+	function users_delete()
+	{
+		// delete user
+		$id = $this->delete('id');
+		if($id>0){
+			$del = $this->userdetails_model->delete($id);
+			if($del){
+				$this->response(['Deleted user'], 200);
+			}else{
+				$this->response(["Invalid ID"], 400);
+			}
+		}else{
+			$this->response(["Invalid ID"], 400);
+		}
+	}
+	
+	
+	
 }
 
 ?>

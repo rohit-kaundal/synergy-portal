@@ -98,7 +98,9 @@ class Userdetails_model extends CI_Model {
 		return $query->result_array();
 	}
 	
-	
+	function delete($id){
+		return ($id ? true : false);
+	}
 	function insert(){
 		$query = $this->db->replace(self::tblname, $this);
 		if($query){
