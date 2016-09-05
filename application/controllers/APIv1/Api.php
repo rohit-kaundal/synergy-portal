@@ -86,7 +86,7 @@ class Api extends REST_Controller{
 		$id = $this->post('agentid');
 		
 		if($id > 0){
-			$data = $this->get_surveydata();
+			$data = $this->get_surveydata($id);
 			if(!empty($data)){
 				$this->response($data, 200);	
 			}else{
@@ -98,36 +98,50 @@ class Api extends REST_Controller{
 		}
 	}
 	
-	private function get_surveydata()
+	private function get_surveydata($agentid)
 	{
-		$agentid = 5; // Rohit
+		$agentid; 
 		
-		$survey_id = 1;
-		
+				
 		$surveydetails;
-		$questions;
-		$answers;
+		$qsa = null; // final form
 		
-		$qas; // final form
-		
-		$query = $this->db->query('select * from tblcampaign
-	left join tblsurvey on tblcampaign.survey_id = tblsurvey.id
-	where tblcampaign.survey_id = ?', $survey_id);
+		$query = $this->db->query('select * from tblcampaign, tblsurvey
+					where tblcampaign.survey_id = tblsurvey.id and
+						find_in_set(?, agents_assoc)', $agentid);
 		if($query){
 			$surveydetails = $query->result_array();
+			
+			foreach($surveydetails as $k => $s){
+				$qsa[$k]['survey'] = $s;
+				
+				$survey_id = $s['survey_id'];
+				$query = $this->db->query('SELECT * FROM tblquestions where survey_id = ?', $survey_id);
+				if($query){
+					$questions = $query->result_array();
+					$qsa[$k]['survey']['questions'] = 	$questions;
+					foreach($questions as $k1=> $q){
+						$questionid = $q['id'];
+						$query = $this->db->query('SELECT * FROM  tblanswers
+							where tblanswers.questionid = ?', $questionid);
+							if($query){
+								$answers = $query->result_array();
+								$qsa[$k]['survey']['questions'][$k1]['answers']=$answers; 
+							}
+					}
+					
+				}
+			}
+			
+			return $qsa;
 		}
 		
-		$query = $this->db->query('SELECT * FROM tblquestions where survey_id = ?', $survey_id);
-		if($query){
-			$questions = $query->result_array();	
-		}
 		
-		$query = $this->db->query('SELECT tblanswers.*, tblquestions.survey_id  FROM  tblanswers
-	left join tblquestions on tblanswers.questionid = tblquestions.id
-	where tblquestions.survey_id = ?', $survey_id);
-		if($query){
-			$answers = $query->result_array();
-		}
+		
+		
+		
+		
+		
 		
 		
 			
