@@ -561,7 +561,21 @@ class Dashboard extends CI_Controller {
 		$this->load->view('admin_footer');
 	}
 	
-	
+	function edit_questions($id)
+	{
+		// get auth wall
+		$this->userauth->check_login();
+		
+		$url = site_url('dashboard/edit_survey');
+		if($id>0){
+			$this->load->view('admin_header', ['title'=>'Survey Questionaire Builder']);
+			$this->load->view('survey_builder', ['id'=>$id]);
+			$this->load->view('admin_footer');
+			
+		}else{
+			redirect($url);
+		}
+	}
 	
 	
 
