@@ -7,27 +7,69 @@
 		* Model tests
 		* 
 		*/
-		$q = new Question_model();
-		$q->question = "Replaced Question 5 - Test";
-		$q->question_type = "matrix";
-		$q->survey_id = 5;
-		$q->isoptional = 'n';
+		$q = new Answer_model();
+		
+		$q->answer = 'Sexy';
+		$q->answerkey = 'VI';
+		$q->answernumerickey = 6;
+		$q->redirectquestionid = 3;
+		$q->questionid = 1;
 		$q->created_by = $_SESSION['user_id'];
 		
-		// test crud
+		// Create test with 5 records
+		
 		$q->save();
-		$q->id = 5;
+		
+		$q->id = 0;
 		$q->save();
 		
-		// get data test
-		$question = $this->question_model->get_question(5);
-		$questions = $this->question_model->get_questions();
+		$q->questionid = 2;
+		$q->id = 0;
+		$q->save();
 		
-		echo "<br/>========= Single Question =======<br/>";
-		print_r($question);
+		$q->id = 0;
+		$q->save();
 		
-		echo "<br/>============ Table of Questions ============================<br/>";
-		print_r($questions);
+		$q->id = 0;
+		$q->questionid = 3;
+		$q->save();
+		
+		echo "<br/>";
+		echo "============== Create test ==================";
+		echo "<br/>";
+		print_r($q->get_answers());	
+		
+		// Replace test 3rd record
+		$q->answer = "Replaced Answer";
+		$q->id = 3;
+		$q->save();
+		
+		echo "<br/>";
+		echo "============== Update test ==================";
+		echo "<br/>";
+		print_r($q->get_answers());
+		
+		// Delete test 4rd record
+		$q->id = 3;
+		$q->delete();
+		echo "<br/>";
+		echo "============== Delete test ==================";
+		echo "<br/>";
+		print_r($q->get_answers());
+		
+		// Get answer with id 3
+		echo "<br/>";
+		echo "============== Single answer test ==================";
+		echo "<br/>";
+		print_r($q->get_answer(1));
+		
+		// Get answers fof questions
+		$q->id = 3;
+		$q->delete();
+		echo "<br/>";
+		echo "============== Answer of question test ==================";
+		echo "<br/>";
+		print_r($q->get_answers_toquestion(1));
 		
 		
 		
