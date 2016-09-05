@@ -73,14 +73,17 @@
 										<i class="entypo-map"></i>
 									</div>
 									<select name="survey_id" class="select2" data-allow-clear="true" data-placeholder="Select survey..." id="survey_id" data-validate="required">
+										<optgroup label="Survey List">		
 										<option></option>
 										<?php
 										// TODO
 										// get survey list
+										$surveys = $this->survey_model->get_record_list();
+										foreach($surveys as $row=>$survey):
 										?>
-										<optgroup label="Survey List">									
-											<option value="1">Sample Survey 1</option>
-											<option value="2">Sample Survey 2</option>											
+										
+											<option value="<?= $survey['id'] ?>"><?= $survey['title']?></option>
+										<?php endforeach; ?>			
 										</optgroup>
 									</select>
 								</div>

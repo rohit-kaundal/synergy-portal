@@ -64,7 +64,8 @@ class Campaign_model extends CI_Model {
 					
 				}
 				$campaign_list[$key]['agents'] = $agentlist;
-				$campaign_list[$key]['survey_title'] =" Sample Survey 1";			
+				$survey = $this->survey_model->get_survey($campaign['survey_id']);
+				$campaign_list[$key]['survey_title'] = $survey ? $survey->title : " Sample Survey 1";			
 			}
 			
 			return $campaign_list;

@@ -32,6 +32,20 @@ class Question_model extends CI_Model {
 			}
             
         }
+        
+        function get_questions_ofsurvey($sid)
+        {
+            
+            $query = $this->db->where(['survey_id'=>$sid])
+            				->get(self::tblName);
+            $result = $query->result_array();
+            if($result){
+				return $result;
+			}else{
+				return null;	
+			}
+            
+        }
 
 
         public function get_question($id)
