@@ -4,5 +4,5 @@
 		redirect(site_url('dashboard/edit_survey'));
 	}
 	
-	
+	print_r($survey);	
 ?>
