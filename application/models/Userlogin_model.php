@@ -46,7 +46,7 @@ class Userlogin_model extends CI_Model {
 		$query = $this->db->get(self::tblname);
 		$result = $query->result_array();
 		if(empty($result)){
-			return false;
+			return null;
 		}
 		return $result[0];
 		

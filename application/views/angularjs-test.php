@@ -1,65 +1,10 @@
-
-<script src="<?= base_url('assets/js/angularjs/angularjs-1.5.8.min.js')?>"></script>
-
-<div ng-app="myApp">
- <div ng-controller = "myCtrl">
-         <input type = "file" file-model = "myFile"/>
-         <button ng-click = "uploadFile()">upload me</button>
-         <p>{{sucess}}</p>
-      </div>
-      
-      <script>
-         var myApp = angular.module('myApp', []);
-         
-         myApp.directive('fileModel', ['$parse', function ($parse) {
-            return {
-               restrict: 'A',
-               link: function(scope, element, attrs) {
-                  var model = $parse(attrs.fileModel);
-                  var modelSetter = model.assign;
-                  
-                  element.bind('change', function(){
-                     scope.$apply(function(){
-                        modelSetter(scope, element[0].files[0]);
-                     });
-                  });
-               }
-            };
-         }]);
-      
-         myApp.service('fileUpload', ['$http', function ($http) {
-            this.uploadFileToUrl = function(file, uploadUrl){
-               var fd = new FormData();
-               fd.append('file', file);
-            
-               $http.post(uploadUrl, fd, {
-                  transformRequest: angular.identity,
-                  headers: {'Content-Type': undefined}
-               })
-            
-               .success(function(data){
-               		alert(data);
-               })
-            
-               .error(function(res){
-               		alert(res);
-               });
-            }
-         }]);
-      
-         myApp.controller('myCtrl', ['$scope', 'fileUpload', function($scope, fileUpload){
-            $scope.uploadFile = function(){
-               var file = $scope.myFile;
-               
-               console.log('file is ' );
-               console.dir(file);
-               
-               var uploadUrl = "sitfile_upload";
-               fileUpload.uploadFileToUrl(file, uploadUrl);
-            };
-         }]);
-			
-      </script>
-
-
+<script src="https://code.angularjs.org/1.2.16/angular.js">
+</script>
+<div ng-app ng-cloak>
+	<div class="form-group">
+		<input type="text" name="firstName" ng-model="firstName" placeholder="Enter your name..." class="form-control"/>
+	</div>
+	<div>
+		<p>Hello {{firstName}}</p>
+	</div>
 </div>
