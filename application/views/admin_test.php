@@ -10,113 +10,40 @@
 		* Model tests
 		* 
 		*/
-		$q = new Respondant_model();
 		
-				
-		$q->fullname = "Rohit Kaundal";
-		$q->mobileid = "9816483986";
-		$q->photo = "/var/www/img/rohit.jpg";
-		$q->address = "Zirakput";
-		$q->pincode = "140603";
-		$q->latitude = "34.333";
-		$q->longitude = "34.444";
-		$q->surveyid = 1;
-		$q->userid = $_SESSION['user_id'];
+		print "<br/>====================Create test================<br/>";
+		for($id = 1; $id <= 5; $id++){
+			$this->vote_model->id = 0;
+			$this->vote_model->questionid = $id;
+			$this->vote_model->answerid = $id * 3;
+			$this->vote_model->respondantind = $id * 5;
+			$this->vote_model->surveyid = $id * $id;
+			$this->vote_model->save();
+		}
+		print_r($this->vote_model->get_votes());
 		
+		print "<br/>====================Update test================<br/>";
+			$this->vote_model->id = 3;
+			$this->vote_model->questionid = 33;
+			$this->vote_model->answerid = 33;
+			$this->vote_model->respondantind = 33;
+			$this->vote_model->surveyid = 33;
+			$this->vote_model->save();
+			print_r($this->vote_model->get_votes());
+			
+		print "<br/>====================Delete test================<br/>";
+			$this->vote_model->id = 4;
+			$this->vote_model->delete();
+			print_r($this->vote_model->get_votes());
 		
-		// Create test with 5 records
-		
-		$q->save();
-		
-		
-		
-		$q->id = 0;
-		$q->fullname = "Kiran Manhas";
-		$q->mobileid = "8628083986";
-		$q->photo = "/var/www/img/kiran.jpg";
-		$q->address = "Zirakput";
-		$q->pincode = "140603";
-		$q->latitude = "34.333";
-		$q->longitude = "34.444";
-		$q->surveyid = 1;
-		$q->userid = $_SESSION['user_id'];
-		$q->save();
-		
-		
-		$q->id = 0;
-		$q->fullname = "Happy Manhas";
-		$q->mobileid = "9816483986";
-		$q->photo = "/var/www/img/happy.jpg";
-		$q->address = "Zirakput";
-		$q->pincode = "140603";
-		$q->latitude = "34.333";
-		$q->longitude = "34.444";
-		$q->surveyid = 2;
-		$q->userid = $_SESSION['user_id'];
-		$q->save();
-		
-		$q->id = 0;
-		$q->fullname = "Arvin";
-		$q->mobileid = "9876543234";
-		$q->photo = "/var/www/img/arvin.jpg";
-		$q->address = "shimla";
-		$q->pincode = "171002";
-		$q->latitude = "34.333";
-		$q->longitude = "34.444";
-		$q->surveyid = 2;
-		$q->userid = $_SESSION['user_id'];
-		$q->save();
-		
-		$q->id = 0;
-		$q->fullname = "Rohit Kaundal";
-		$q->mobileid = "9816483986";
-		$q->photo = "/var/www/img/rohit.jpg";
-		$q->address = "Zirakput";
-		$q->pincode = "140603";
-		$q->latitude = "89.333";
-		$q->longitude = "23.444";
-		$q->surveyid = 2;
-		$q->userid = $_SESSION['user_id'];
-		
-		$q->save();
-		
-		echo "<br/>";
-		echo "============== Create test ==================";
-		echo "<br/>";
-		print_r($q->get_respondants());	
-		
-		// Replace test 3rd record
-		$q->fullname = "Sameer Chawla Sam";
-		$q->id = 4;
-		$q->save();
-		
-		echo "<br/>";
-		echo "============== Update test ==================";
-		echo "<br/>";
-		print_r($q->get_respondants());
-		
-		// Delete test 4rd record
-		$q->id = 3;
-		$q->delete();
-		echo "<br/>";
-		echo "============== Delete test ==================";
-		echo "<br/>";
-		print_r($q->get_respondants());
-		
-		// Get answer with id 3
-		echo "<br/>";
-		echo "============== Single answer test ==================";
-		echo "<br/>";
-		print_r($q->get_respondant(4));
-		
-		// Get answers fof questions
-		$q->id = 3;
-		$q->delete();
-		echo "<br/>";
-		echo "============== Resondandts of survey test ==================";
-		echo "<br/>";
-		print_r($q->get_respondants_tosurvey(2));
-		
+		print "<br/>====================Read single test================<br/>";
+			print_r($this->vote_model->get_vote(2));
+			
+		print "<br/>====================Read by respondant test================<br/>";
+			print_r($this->vote_model->get_votes_byrespondant(25));
+			
+		print "<br/>====================Read by awnser test================<br/>";
+			print_r($this->vote_model->get_votes_onanswers(3));
 		
 		
 		
@@ -124,4 +51,5 @@
 	
 	
 	
+
 	
