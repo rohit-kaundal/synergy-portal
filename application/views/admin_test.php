@@ -1,11 +1,32 @@
 <?php
 
 	echo '<pre>';
-		$id = 1;
-		$singleSurvey = $this->survey_model->get_survey($id);
-		print_r($singleSurvey);
+	
+	
+		
+		
+		/**
+		* 
+		* Model tests
+		* 
+		*/
+		
+		print "<br/>====================Create test================<br/>";		
+		
+		print "<br/>====================Update test================<br/>";
+		
+		print "<br/>====================Delete test================<br/>";
+		
+		print "<br/>====================Read single test================<br/>";
+		
+			
+	
+		
+		
+		
 	echo '</pre>';
 	
 	
 	
+
 	

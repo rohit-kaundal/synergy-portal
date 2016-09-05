@@ -113,6 +113,10 @@
 					
 					
 					<td>
+						<a href="<?= site_url('dashboard/edit_questions').'/'.$singleSurvey['id'] ?>" class="btn btn-success btn-sm btn-icon icon-left">
+							<i class="entypo-list"></i>
+							Manage Questions
+						</a>
 						<a href="<?= site_url('dashboard/edit_survey').'/'.$singleSurvey['id'] ?>" class="btn btn-default btn-sm btn-icon icon-left">
 							<i class="entypo-pencil"></i>
 							Edit
