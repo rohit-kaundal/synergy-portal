@@ -73,7 +73,8 @@ class Api extends REST_Controller{
 		
 		$user = $this->userlogin_model->check_login($username,$password);
 		if($user){
-			$this->response($user,200);
+			$userdetails = $this->userdetails_model->get_all_details_ofid($user['id']);
+			$this->response($userdetails,200);
 		}else{
 			$this->response(["Invalid ID/Password!"], 400);
 		}
@@ -137,13 +138,6 @@ class Api extends REST_Controller{
 		}
 		
 		
-		
-		
-		
-		
-		
-		
-		
 			
 		
 		
@@ -163,6 +157,17 @@ class Api extends REST_Controller{
 		
 		return $qas;
 	}
+	
+	
+	// sync votes from mobile app
+	
+	public function syncvotes_post()
+	{
+		
+		$postdata = $this->post();
+		$this->response(['status'=>200, 'votes'=>$postdata], 200);
+	}
+	
 	
 	
 }

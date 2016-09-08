@@ -6,6 +6,7 @@ class Vote_model extends CI_Model {
         public  $id = 0,
 				$questionid,
 				$answerid,
+				$answertext,
 				$respondantind,
 				$surveyid,
 				$votedon;
