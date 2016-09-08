@@ -163,9 +163,65 @@ class Api extends REST_Controller{
 	
 	public function syncvotes_post()
 	{
+		/*data Format
+		"data":{"resp":[{"fullname":"Rohiit","mobileid":"9816483986","address":"hicommand","photo":"","pincode":"1619002","latitude":"786.786","longitude":"786.786","surveyid":"1","userid":"5","dateofsurvey":1473365439766},{"fullname":"Kiru","mobileid":"97967979","address":"Chd","photo":"","pincode":"181771","latitude":"786.786","longitude":"786.786","surveyid":"1","userid":"5","dateofsurvey":1473366088892}],"votes":[{"questionid":"1","answerid":"1","answertext":"Kiru","respondantind":"9816483986","surveyid":"1","votedon":1473365445262},{"questionid":"2","answerid":"3","answertext":"Female","respondantind":"9816483986","surveyid":"1","votedon":1473365446931},{"questionid":"1","answerid":"1","answertext":"Maa","respondantind":"9816483986","surveyid":"1","votedon":1473366093323},{"questionid":"2","answerid":"3","answertext":"Female","respondantind":"9816483986","surveyid":"1","votedon":1473366094554}]}
+		*/
 		
-		$postdata = $this->post();
-		$this->response(['status'=>200, 'votes'=>$postdata], 200);
+		
+		$resp = $this->post('resp');
+		$votes = $this->post('votes');
+
+		//$this->response($votes[0],200);
+
+		//$this->response($resp[1],200);
+
+		if($resp){
+
+			try{
+				foreach($resp as $r){
+
+					$rm = new respondant_model();
+
+					$rm->id = 0;
+					$rm->fullname = $r['fullname'];
+					$rm->mobileid = $r['mobileid'];
+					$rm->photo = $r['photo'];
+					$rm->address = $r['address'];
+					$rm->pincode = $r['pincode'];
+					
+					$rm->latitude = $r['latitude'];
+					$rm->longitude = $r['longitude'];
+					$rm->surveyid = $r['surveyid'];
+					$rm->userid = $r['userid'];
+					$rm->dateofsurvey = $r['dateofsurvey'];
+					$rm->save();
+					
+
+				}
+
+				foreach($votes as $v){
+
+					$vm = new vote_model();
+					$vm->id = 0;
+					$vm->questionid = $v['questionid'];
+					$vm->answerid = $v['answerid'];
+					$vm->answertext = $v['answertext'];
+					$vm->respondantind = $v['respondantind'];
+					$vm->surveyid = $v['surveyid'];
+					$vm->votedon = $v['votedon'];
+					$vm->save();
+
+				}
+
+				$this->response('Data saved', 200);
+
+			}catch(Exception $e){
+				$this->response("Error:"+$e.toString(),400);
+			}
+		}
+		
+
+		$this->response("no parameters", 400);
 	}
 	
 	
