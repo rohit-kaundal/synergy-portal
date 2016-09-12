@@ -19,45 +19,6 @@ class Api extends REST_Controller{
 	/**
 	* Users api
 	*/
-	/*function users_get()
-	{
-		$id = $this->get('id');
-		if($id){
-			$user = $this->userdetails_model->get_all_details_ofid($id);
-			if($user){
-				$this->response($user,200);	
-			}else{
-				$this->response(null,404);
-			}
-			
-		}else{
-			$users = $this->userdetails_model->get_all_details();
-			if($users){
-				$this->response($users,200);	
-			}else{
-				$this->response(null,404);
-			}
-			
-		}
-	}
-	
-	function users_delete()
-	{
-		// delete user
-		$id = $this->delete('id');
-		if($id>0){
-			$del = $this->userdetails_model->delete($id);
-			if($del){
-				$this->response(['Deleted user'], 200);
-			}else{
-				$this->response(["Invalid ID"], 400);
-			}
-		}else{
-			$this->response(["Invalid ID"], 400);
-		}
-	}*/
-	
-	
 	/**
 	* Login api implemented
 	*/
@@ -68,7 +29,7 @@ class Api extends REST_Controller{
 		
 		
 		if(!$username && !$password){
-			$this->response(["Invalid credentials"], 400);
+			$this->response(["Invalid credentials"], 500);
 		}
 		
 		$user = $this->userlogin_model->check_login($username,$password);
@@ -163,67 +124,78 @@ class Api extends REST_Controller{
 	
 	public function syncvotes_post()
 	{
-		/*data Format
-		"data":{"resp":[{"fullname":"Rohiit","mobileid":"9816483986","address":"hicommand","photo":"","pincode":"1619002","latitude":"786.786","longitude":"786.786","surveyid":"1","userid":"5","dateofsurvey":1473365439766},{"fullname":"Kiru","mobileid":"97967979","address":"Chd","photo":"","pincode":"181771","latitude":"786.786","longitude":"786.786","surveyid":"1","userid":"5","dateofsurvey":1473366088892}],"votes":[{"questionid":"1","answerid":"1","answertext":"Kiru","respondantind":"9816483986","surveyid":"1","votedon":1473365445262},{"questionid":"2","answerid":"3","answertext":"Female","respondantind":"9816483986","surveyid":"1","votedon":1473365446931},{"questionid":"1","answerid":"1","answertext":"Maa","respondantind":"9816483986","surveyid":"1","votedon":1473366093323},{"questionid":"2","answerid":"3","answertext":"Female","respondantind":"9816483986","surveyid":"1","votedon":1473366094554}]}
-		*/
+		$recordType = $this->post('recordtype');
+		$record = $this->post('record');
 		
-		
-		$resp = $this->post('resp');
-		$votes = $this->post('votes');
-
-		//$this->response($votes[0],200);
-
-		//$this->response($resp[1],200);
-
-		if($resp){
-
-			try{
-				foreach($resp as $r){
-
-					$rm = new respondant_model();
+		if($recordType && $record){
+			switch ($recordType) {
+			    case "vote":
+			        $vm = new vote_model();
+					$vm->id = 0;
+					$vm->questionid = $record['questionid'];
+					$vm->answerid = $record['answerid'];
+					$vm->answertext = $record['answertext'];
+					$vm->respondantind = $record['respondantind'];
+					$vm->surveyid = $record['surveyid'];
+					$vm->votedon = date('Y-m-d H:i:s', $record['votedon'] / 1000);
+					$vm->userid = $record['userid'];
+					if($vm->save()){
+						
+						$this->response($vm, 200);
+					}
+			        break;
+			        
+			    case "respondant":
+			        $rm = new respondant_model();
 
 					$rm->id = 0;
-					$rm->fullname = $r['fullname'];
-					$rm->mobileid = $r['mobileid'];
-					$rm->photo = $r['photo'];
-					$rm->address = $r['address'];
-					$rm->pincode = $r['pincode'];
+					$rm->fullname = $record['fullname'];
+					$rm->mobileid = $record['mobileid'];
+					$rm->photo = $record['photo'];
+					$rm->address = $record['address'];
+					$rm->pincode = $record['pincode'];
 					
-					$rm->latitude = $r['latitude'];
-					$rm->longitude = $r['longitude'];
-					$rm->surveyid = $r['surveyid'];
-					$rm->userid = $r['userid'];
-					$rm->dateofsurvey = $r['dateofsurvey'];
-					$rm->save();
-					
-
-				}
-
-				foreach($votes as $v){
-
-					$vm = new vote_model();
-					$vm->id = 0;
-					$vm->questionid = $v['questionid'];
-					$vm->answerid = $v['answerid'];
-					$vm->answertext = $v['answertext'];
-					$vm->respondantind = $v['respondantind'];
-					$vm->surveyid = $v['surveyid'];
-					$vm->votedon = $v['votedon'];
-					$vm->save();
-
-				}
-
-				$this->response('Data saved', 200);
-
-			}catch(Exception $e){
-				$this->response("Error:"+$e.toString(),400);
+					$rm->latitude = $record['latitude'];
+					$rm->longitude = $record['longitude'];
+					$rm->surveyid = $record['surveyid'];
+					$rm->userid = $record['userid'];
+					$rm->dateofsurvey = date('Y-m-d H:i:s', $record['dateofsurvey'] / 1000);
+					if($rm->save()){
+						$this->response($rm,200);	
+					}
+			        
+			    
+			    default:
+			        $this->response("Unknown Record Type",500);
 			}
 		}
 		
-
-		$this->response("no parameters", 400);
 	}
 	
+
+	public function syncdataofagent_post(){
+
+		$id = $this->post('agentid');
+		$respdata = [];
+
+		if(!$id){
+			$this->response("Access-Denied",500);
+		}else{
+			
+			$query = $this->db->where('userid', $id)
+		             ->get('tblrespondant');
+
+		    $total_count = $query->num_rows() ? $query->num_rows() : 0;
+
+			$respdata['uploadedSurveysCount'] = $total_count;
+
+			// More variables here
+
+
+			$this->response($respdata, 200);
+
+		}
+	}
 	
 	
 }

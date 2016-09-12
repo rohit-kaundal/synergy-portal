@@ -9,7 +9,8 @@ class Vote_model extends CI_Model {
 				$answertext,
 				$respondantind,
 				$surveyid,
-				$votedon;
+				$votedon,
+                $userid;
 		
         const tblName = 'tblvotes';
 

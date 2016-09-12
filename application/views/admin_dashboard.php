@@ -1,6 +1,3 @@
-			
-			
-		
 		
 		<script type="text/javascript">
 		jQuery(document).ready(function($) 
@@ -163,20 +160,30 @@
 		<div class="col-md-6">
 				<div class="tile-stats tile-neon-red">
 					<div class="icon"><i class="entypo-chat"></i></div>
-					<div class="num" data-start="0" data-end="124" data-postfix="" data-duration="1400" data-delay="0">0</div>
+					<?php 
+						$q = $this->db->get('tblcampaign');
+						$rows = $q->num_rows() ? $q->num_rows() : 0;
+					?>
+					<div class="num" data-start="0" data-end="<?=$rows?>" data-postfix="" data-duration="1400" data-delay="0">
+					0
+					</div>
 					
-					<h3>Agents</h3>
-					<p>Total agents</p>
+					<h3>Campaigns</h3>
+					<p>Total Campaigns</p>
 				</div>	
 				
 				<br />
+				<?php 
+						$q = $this->db->get('tblrespondant');
+						$rows = $q->num_rows() ? $q->num_rows() : 0;
+					?>
 				
 				<div class="tile-stats tile-primary">
 					<div class="icon"><i class="entypo-users"></i></div>
-					<div class="num" data-start="0" data-end="213" data-postfix="" data-duration="1400" data-delay="0">0</div>
+					<div class="num" data-start="0" data-end="<?= $rows ?>" data-postfix="" data-duration="1400" data-delay="0">0</div>
 					
-					<h3>Total surveys</h3>
-					<p>Surveys till date</p>
+					<h3>Total Responses</h3>
+					<p>Responses till date</p>
 				</div>	
 				
 					

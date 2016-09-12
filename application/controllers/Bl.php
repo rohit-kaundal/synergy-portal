@@ -1146,4 +1146,59 @@ class Bl extends CI_Controller
 		
 	}
 
+	
+
+	function printPages($pages){
+		foreach ($pages['pages'] as $key => $page) {
+
+			print(PHP_EOL."Page no: ".$page['number'].PHP_EOL);
+			print("Name: ".$page['name'].PHP_EOL);
+			print("Desc: ".$page['description'].PHP_EOL);
+			$nextpage = array_key_exists('nextPage', $page['pageFlow']) ? $page['pageFlow']['nextPage'] : $page['pageFlow']['page']['number'];
+			print("Next Page: ".$nextpage.PHP_EOL);
+			print("=====================================================".PHP_EOL);
+			foreach($page['elements'] as $index => $questions ){
+				print("Question: ".$questions['question']['text'].PHP_EOL);
+				if(array_key_exists('offeredAnswers', $questions['question'])){
+					foreach($questions['question']['offeredAnswers'] as $key => $answers){
+						print("     ==================".PHP_EOL);
+						print("                 ".$answers['value'].PHP_EOL);
+					}
+
+				}
+			}
+
+		}
+	}
+
+	function savePages($pages){
+		$pageData = [];
+
+		foreach ($pages['pages'] as $key => $page) {
+			$pageData['id'] = $page['id'];
+			$pageData['number'] = $page['number'];
+			$pageData['name'] =$page['name'];
+			$pageData['description'] = $page['description'];
+			$pageData['page_flow_id'] = array_key_exists('page', $page['pageFlow']) ? $page['pageFlow']['page']['id'] : 0;
+			$pageData['page_flow_number'] = array_key_exists('page', $page['pageFlow']) ? $page['pageFlow']['page']['number'] : 0;
+			$pageData['survey_id'] = 786;
+
+			
+			$query = $this->db->replace('tblsurvey_pages', $pageData);
+			print("Rows added: ".$this->db->affected_rows());
+
+			
+
+		}
+	}
+
+	function survey_post(){
+		$data = file_get_contents('php://input');
+		$pages = json_decode($data, true);
+		
+		$this->savePages($pages);
+
+		
+	}
+
 }
