@@ -76,6 +76,7 @@ class Api extends REST_Controller{
 			
 			foreach($surveydetails as $k => $s){
 				$qsa[$k]['survey'] = $s;
+				$qsa[$k]['survey']['angular_form'] = json_decode($qsa[$k]['survey']['angular_form']);
 				
 				$survey_id = $s['survey_id'];
 				$query = $this->db->query('SELECT * FROM tblquestions where survey_id = ?', $survey_id);
@@ -139,6 +140,7 @@ class Api extends REST_Controller{
 					$vm->surveyid = $record['surveyid'];
 					$vm->votedon = date('Y-m-d H:i:s', $record['votedon'] / 1000);
 					$vm->userid = $record['userid'];
+
 					if($vm->save()){
 						
 						$this->response($vm, 200);
@@ -146,9 +148,10 @@ class Api extends REST_Controller{
 			        break;
 			        
 			    case "respondant":
+
 			        $rm = new respondant_model();
 
-					$rm->id = 0;
+					$rm->id = $record['id'];
 					$rm->fullname = $record['fullname'];
 					$rm->mobileid = $record['mobileid'];
 					$rm->photo = $record['photo'];
@@ -160,6 +163,7 @@ class Api extends REST_Controller{
 					$rm->surveyid = $record['surveyid'];
 					$rm->userid = $record['userid'];
 					$rm->dateofsurvey = date('Y-m-d H:i:s', $record['dateofsurvey'] / 1000);
+					$rm->angular_form_response = isset($record['angular_form_response']) ? json_encode($record['angular_form_response']) : '{}';
 					if($rm->save()){
 						$this->response($rm,200);	
 					}
@@ -194,6 +198,23 @@ class Api extends REST_Controller{
 
 			$this->response($respdata, 200);
 
+		}
+	}
+
+	public function getangularform_post(){
+		$surveyid = $this->post('sid');
+		if($surveyid){
+			$query = $this->db->select('angular_form')
+							->from('tblsurvey')->where(['id'=>$surveyid])->get();
+			if($query){
+				$angform = $query->result_array();
+				$respo = isset($angform[0]['angular_form']) ? $angform[0]['angular_form']: ['pages'=>[]];
+				$this->response($respo,200);
+			}else{
+				$this->response("{}", 404);
+			}
+		}else{
+			$this->response("Survey does not exist", 400);
 		}
 	}
 	

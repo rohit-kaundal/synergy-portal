@@ -9,6 +9,7 @@ class Survey_model extends CI_Model {
 		public $keywords;
 		public $created_by;
 		public $created_on;
+		public $angular_form;
 		
 	
         const tblName = 'tblsurvey';
@@ -27,6 +28,7 @@ class Survey_model extends CI_Model {
 						->get(self::tblName);
 			$data = $query->result_object();
 			if($data){
+
 				$obj = new Survey_model();
 				$data = $data[0];
 				
@@ -36,6 +38,7 @@ class Survey_model extends CI_Model {
 				$obj->keywords = $data->keywords;
 				$obj->created_by = $data->created_by;
 				$obj->created_on = $data->created_on;
+				$obj->angular_form = $data->angular_form;
 				
 				
 				return $obj;

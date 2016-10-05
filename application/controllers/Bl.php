@@ -1173,30 +1173,82 @@ class Bl extends CI_Controller
 
 	function savePages($pages){
 		$pageData = [];
+		$elementsData = [];
+		$answerData = [];
 
 		foreach ($pages['pages'] as $key => $page) {
 			$pageData['id'] = $page['id'];
 			$pageData['number'] = $page['number'];
 			$pageData['name'] =$page['name'];
 			$pageData['description'] = $page['description'];
-			$pageData['page_flow_id'] = array_key_exists('page', $page['pageFlow']) ? $page['pageFlow']['page']['id'] : 0;
+			$pageData['page_flow_id'] = array_key_exists('page', $page['pageFlow']) ? $page['pageFlow']['page']['id'] : $page['pageFlow']['nextPage'];
 			$pageData['page_flow_number'] = array_key_exists('page', $page['pageFlow']) ? $page['pageFlow']['page']['number'] : 0;
 			$pageData['survey_id'] = 786;
 
+			$questions = $page['elements'];
+			$query = $this->db->replace('tblsurvey_pages', $pageData); //Push into db
+			//print_r($pageData);
+
 			
-			$query = $this->db->replace('tblsurvey_pages', $pageData);
-			print("Rows added: ".$this->db->affected_rows());
+			foreach($questions as $key => $elem){
+				$elementsData['id'] = $elem['id'];
+				$elementsData['order_no'] = $elem['orderNo'];
+				$elementsData['type'] = $elem['type'];
+				$elementsData['question_id'] = $elem['question']['id'];
+				$elementsData['question_text'] = $elem['question']['text'];
+				$elementsData['question_type'] = $elem['question']['type'];
+				$elementsData['question_required'] =  $elem['question']['required'];
+				$elementsData['question_pageflowmodifier'] = isset($elem['question']['pageFlowModifier']) ? $elem['question']['pageFlowModifier'] : null;
+				$elementsData['page_id'] = $pageData['id'];
+				
+				$query = $this->db->replace('tblsurvey_elements', $elementsData);//Push into db
+
+				
+
+
+
+				if(isset($elem['question']['offeredAnswers'])){
+					$answers = $elem['question']['offeredAnswers'];
+					
+					foreach ($answers as $key => $answer) {
+
+						$answerData['id'] = $answer['id'];
+						$answerData['order_no'] = $answer['orderNo'];
+						$answerData['option_value'] = $answer['value'];
+						$answerData['pageflow_id'] = isset($answer['pageFlow']['page']['id']) ? $answer['page']['id'] : $answer['pageFlow']['nextPage'];
+						$answerData['pageflow_number'] = isset($answer['pageFlow']['page']['number']) ? $answer['pageFlow']['page']['number'] : 0;
+						$answerData['question_id'] = $elementsData['question_id'];
+
+						$this->db->replace('tblsurvey_options', $answerData);	//Push into db					
+						
+					}
+				}
+
+				
+			}
 
 			
 
 		}
 	}
 
+	function save_survey_blob(){
+		$data = file_get_contents('php://input');
+		$pages = json_decode($data, true);
+	}
+
 	function survey_post(){
 		$data = file_get_contents('php://input');
 		$pages = json_decode($data, true);
 		
-		$this->savePages($pages);
+		$surveyid = isset($pages['surveyid']) ? $pages['surveyid'] : 0;
+		if($surveyid){
+			$formdata = json_encode($pages['angularform']);
+			$this->db->set('angular_form', $formdata);
+			$this->db->where('id', $surveyid);
+			$this->db->update('tblsurvey');
+			echo $this->db->affected_rows();
+		}
 
 		
 	}

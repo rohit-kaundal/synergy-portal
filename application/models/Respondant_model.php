@@ -14,7 +14,8 @@ class Respondant_model extends CI_Model {
 				$longitude,
 				$surveyid,
 				$userid,
-				$dateofsurvey;
+				$dateofsurvey,
+                $angular_form_response;
 		
         const tblName = 'tblrespondant';
 
