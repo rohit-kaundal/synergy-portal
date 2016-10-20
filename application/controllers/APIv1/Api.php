@@ -127,8 +127,10 @@ class Api extends REST_Controller{
 	{
 		$recordType = $this->post('recordtype');
 		$record = $this->post('record');
+
+		print_r($this->post());
 		
-		if($recordType && $record){
+		/*if($recordType && $record){
 			switch ($recordType) {
 			    case "vote":
 			        $vm = new vote_model();
@@ -149,7 +151,7 @@ class Api extends REST_Controller{
 			        
 			    case "respondant":
 
-			        $rm = new respondant_model();
+			      */  $rm = new respondant_model();
 
 					$rm->id = $record['id'];
 					$rm->fullname = $record['fullname'];
@@ -168,11 +170,11 @@ class Api extends REST_Controller{
 						$this->response($rm,200);	
 					}
 			        
-			    
+			   /* 
 			    default:
 			        $this->response("Unknown Record Type",500);
 			}
-		}
+		}*/
 		
 	}
 	
@@ -208,7 +210,7 @@ class Api extends REST_Controller{
 							->from('tblsurvey')->where(['id'=>$surveyid])->get();
 			if($query){
 				$angform = $query->result_array();
-				$respo = isset($angform[0]['angular_form']) ? $angform[0]['angular_form']: ['pages'=>[]];
+				$respo = isset($angform[0]['angular_form']) ? $angform[0]['angular_form']: json_encode(['pages'=>[]]);
 				$this->response($respo,200);
 			}else{
 				$this->response("{}", 404);

@@ -561,7 +561,7 @@ class Dashboard extends CI_Controller {
 		$this->load->view('admin_footer');
 	}
 	
-	function edit_questions($id)
+	function edit_questions($id=0)
 	{
 		// get auth wall
 		$this->userauth->check_login();

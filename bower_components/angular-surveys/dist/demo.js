@@ -7,6 +7,9 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
         $translateProvider.preferredLanguage('en');
     })
     .controller('DemoController', function($q,$http, $translate, mwFormResponseUtils) {
+        
+        /*
+
         var ctrl = this;
         ctrl.mergeFormWithResponse = true;
         ctrl.cgetQuestionWithResponseList = true;
@@ -18,20 +21,69 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
         ctrl.viewerReadOnly = false;
         ctrl.languages = ['en', 'pl', "es", "ru"];
         ctrl.httpResponse = ""
-        ctrl.formData = {                   
-                  "pages": []
-                };
+        ctrl.formData = {};
+        */
 
-        ctrl.saveData = function(){
+        var ctrl = this;
+        ctrl.builderReadOnly = false;
+        ctrl.viewerReadOnly = false;
+        ctrl.languages = ['en', 'pl', "es"];
+        ctrl.formData = null;
+        
+        ctrl.formBuilder={};
+        ctrl.formViewer = {};
+        ctrl.formOptions = {
+            autoStart: false
+        };
+        ctrl.formStatus= {};
+        ctrl.responseData={};
+        ctrl.showResponseRata=false;
+
+        ctrl.saveResponse = function(){
+            var d = $q.defer();
+        //    var res = confirm("Response save success?");
+            if(res){
+                d.resolve(true);
+            }else{
+                d.reject();
+            }
+
+            return d.promise;
+        };
+
+
+        ctrl.loadSurveyForm = function(sId){
+            var loadFormUrl = 'http://allaboutfarmers.in/app/apiv1/api/getangularform';
+            var postData = {
+                sid:sId
+            };
+
+            $http.post(loadFormUrl,postData)
+            .then(function(s){
+                ctrl.formData = JSON.parse(s.data);
+                //alert(s.data);
+            },function(err){
+                ctrl.formData ={ "pages":[] };
+            });
+        }
+
+        ctrl.saveData = function(surveyId){
             
-            var formDataUrl = 'http://52.76.138.150/app/bl/survey_post';
-            $http.post(formDataUrl, ctrl.formData).
+            var formDataUrl = 'http://allaboutfarmers.in/app/bl/survey_post';
+            var postData = {
+                surveyid:surveyId,
+                angularform:ctrl.formData
+            };
+
+            $http.post(formDataUrl, postData).
             then(function(s){
                 ctrl.httpResponse = s;
             },
             function(err){
                 ctrl.httpResponse = err;
             });
+            
+
         }                         
                             
         /*$http.get('form-data.json')
@@ -48,21 +100,12 @@ angular.module('app', ['ui.bootstrap', 'mwFormBuilder', 'mwFormViewer', 'mwFormU
             customQuestionSelects:  [
                 {key:"category", label: 'Category', options: [{key:"1", label:"Uno"},{key:"2", label:"dos"},{key:"3", label:"tres"},{key:"4", label:"4"}], required: false},
                 {key:"category2", label: 'Category2', options: [{key:"1", label:"Uno"},{key:"2", label:"dos"},{key:"3", label:"tres"},{key:"4", label:"4"}]}
-            ],
-            elementTypes: ['question', 'image']*/
+            ],*/
+            elementTypes: ['question']
         };
         ctrl.formStatus= {};
         ctrl.responseData={};
-        /*$http.get('response-data.json')
-            .then(function(res){
-                ctrl.responseData = res.data;
-            });
-            
-        $http.get('template-data.json')
-            .then(function(res){
-                ctrl.templateData = res.data;
-            });*/
-
+       
         ctrl.showResponseRata=false;
 
         ctrl.saveResponse = function(){
