@@ -576,6 +576,15 @@ class Dashboard extends CI_Controller {
 			redirect($url);
 		}
 	}
+
+	function report_agent()
+	{
+		$this->userauth->check_login();
+		
+		$this->load->view('admin_header', ['title'=>'Agent Report', 'effect' => 'page-left-in']);
+		$this->load->view('agent_report');
+		$this->load->view('admin_footer');
+	}
 	
 	
 

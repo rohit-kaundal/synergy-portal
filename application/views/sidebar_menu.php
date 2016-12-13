@@ -233,7 +233,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="">
+							<a href="<?= site_url('dashboard/report_agent')?>">
 									<span class="title">Agent report</span>
 							</a>
 						</li>
