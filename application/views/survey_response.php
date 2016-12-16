@@ -1,14 +1,26 @@
 <?php
 	//echo '<pre>';
-	$query = $this->db->query('select u.userid, u.mobile, u.fullname, u.gender, u.address, u.pincode, (select count(*) from tblrespondant t where t.userid = u.userid) as survey_count from tbluserdetails u order by survey_count desc;');
+	$query = $this->db->query('select r.*, s.angular_form, s.title from tblrespondant r, tblsurvey s where s.id = r.surveyid and  r.id='.intval($id));
 	$result = $query->result_array();// || array();
-	//print_r($result);
+	//print_r($result); exit;
 	//echo '</pre>';
+	if(count($result) <=0){
+		redirect(site_url('dashboard/report_agent'));
+	}
+	$qas = getResponseSheet(json_decode($result[0]['angular_form']), json_decode($result[0]['angular_form_response']), true);
+	$qs = $qas[0];
+	$ans = $qas[1];
 ?>
 <div class="panel panel-primary panel-shadow">
 	<div class="panel-heading">
 		<div class="panel-title">
-			<h3><i class="entypo-pencil"></i>Agent Report</h3>
+			<h3><i class="entypo-clipboard"></i>Response ID #<?= $result[0]['id']?> (<?= $result[0]['title']?></h3>
+			<h3><i class="entypo-mobile"></i><?= $result[0]['mobileid']?></h3>
+			<h3><i class="entypo-user"></i><?= $result[0]['fullname']?></h3>
+			<h3><i class="entypo-clock"></i><?= date('l jS \of F Y h:i:s A', strtotime($result[0]['dateofsurvey']))?></h3>
+			<h3><i class="entypo-location"></i><?= $result[0]['address']?> - <?= $result[0]['pincode']?></h3>
+			<h3><i class="entypo-compass"></i><?= $result[0]['latitude'] ? $result[0]['latitude'] : '0'?>, <?= $result[0]['longitude'] ? $result[0]['longitude'] : '0' ?></h3>
+
 		</div>
 		
 	</div>
@@ -67,33 +79,24 @@
 			<thead>
 				<tr>
 					
-					<th>Mobile Number</th>
-					<th>Full Name</th>
-					<th>Gender</th>
-					<th>Address</th>
+					<th>Questions ?</th>
+					<th>Answers</th>
 					
-					<th>Survey Count</th>
 				</tr>
 			</thead>
 			
 			<tbody>
-			<?php foreach($result as $row):?>
-				<tr>
-					
-					<td><?= $row['mobile']?></td>
-					<?php if($row['survey_count'] > 0):?>
-						<td><a href="<?=site_url('dashboard/report_agent/'.$row['userid']) ?>"><?= $row['fullname']?></a></td>
-					<?php else:?>
-						<td><?= $row['fullname']?></td>
-					<?php endif;?>
-					
-					<td><?= $row['gender']?></td>
-					<td><?= $row['address']?> - <?= $row['pincode']?></td>
-					<td class="<?= ($row['survey_count'] > 0 ? 'text-info': 'text-danger')?>"><?= $row['survey_count']?></td>
-				</tr>
-			<?php endforeach; ?>
+			
+						<?php foreach($qs as $index => $val):?>
+							<tr>
+								<td><?= $qs[$index]?></td>
+								<td><?= $ans[$index]?></td>
+							</tr>
+						<?php endforeach; ?>	
+			
 			</tbody>
 		</table>
+		
 	<?php else:?>
 		<div class="error">No records found!</div>
 	<?php endif;?>

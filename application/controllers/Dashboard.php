@@ -577,12 +577,31 @@ class Dashboard extends CI_Controller {
 		}
 	}
 
-	function report_agent()
+	function report_agent($id=0)
 	{
 		$this->userauth->check_login();
 		
 		$this->load->view('admin_header', ['title'=>'Agent Report', 'effect' => 'page-left-in']);
-		$this->load->view('agent_report');
+		if(!$id){
+			$this->load->view('agent_report');
+		}else{
+			$this->load->view('agent_single_report', ['id'=>$id]);
+		}
+		
+		$this->load->view('admin_footer');
+	}
+
+	function survey_response($id=0)
+	{
+		$this->userauth->check_login();
+		
+		$this->load->view('admin_header', ['title'=>'Agent Report', 'effect' => 'page-left-in']);
+		if(!$id){
+			redirect(site_url('dashboard/report_agent'));
+		}else{
+			$this->load->view('survey_response', ['id'=>$id]);
+		}
+		
 		$this->load->view('admin_footer');
 	}
 	

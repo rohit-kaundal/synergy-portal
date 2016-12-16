@@ -1,14 +1,17 @@
 <?php
 	//echo '<pre>';
-	$query = $this->db->query('select u.userid, u.mobile, u.fullname, u.gender, u.address, u.pincode, (select count(*) from tblrespondant t where t.userid = u.userid) as survey_count from tbluserdetails u order by survey_count desc;');
+	$query = $this->db->query('select u.userid, u.mobile as agent_mobile, u.fullname as agent_fullname, u.gender as agent_gender, u.address agent_address, u.pincode as agent_pincode, t.* from tblrespondant t, tbluserdetails u  where u.userid = t.userid and t.userid = '.intval($id).' order by dateofsurvey desc');
 	$result = $query->result_array();// || array();
-	//print_r($result);
+	//print_r(array_keys($result[0])); exit;
 	//echo '</pre>';
+	if(count($result) <=0){
+		redirect(site_url('dashboard/report_agent'));
+	}
 ?>
 <div class="panel panel-primary panel-shadow">
 	<div class="panel-heading">
 		<div class="panel-title">
-			<h3><i class="entypo-pencil"></i>Agent Report</h3>
+			<h3><i class="entypo-clipboard"></i><?= $result[0]['agent_fullname']?> - Report (<?= count($result)?> respondants)</h3>
 		</div>
 		
 	</div>
@@ -67,12 +70,12 @@
 			<thead>
 				<tr>
 					
-					<th>Mobile Number</th>
-					<th>Full Name</th>
-					<th>Gender</th>
+					<th>Respondant Number</th>
+					<th>Respondant Full Name</th>
+					<th>Date of Survey</th>
 					<th>Address</th>
-					
-					<th>Survey Count</th>
+					<th>LAT/LONG</th>				
+					<th>View Survey</th>
 				</tr>
 			</thead>
 			
@@ -80,16 +83,12 @@
 			<?php foreach($result as $row):?>
 				<tr>
 					
-					<td><?= $row['mobile']?></td>
-					<?php if($row['survey_count'] > 0):?>
-						<td><a href="<?=site_url('dashboard/report_agent/'.$row['userid']) ?>"><?= $row['fullname']?></a></td>
-					<?php else:?>
-						<td><?= $row['fullname']?></td>
-					<?php endif;?>
-					
-					<td><?= $row['gender']?></td>
+					<td><?= $row['mobileid']?></td>
+					<td><?= $row['fullname']?></td>
+					<td><?= date('l jS \of F Y h:i:s A', strtotime($row['dateofsurvey']))?></td>
 					<td><?= $row['address']?> - <?= $row['pincode']?></td>
-					<td class="<?= ($row['survey_count'] > 0 ? 'text-info': 'text-danger')?>"><?= $row['survey_count']?></td>
+					<td><?= $row['latitude'] ? $row['latitude'] : '0'?>, <?= $row['longitude'] ? $row['longitude'] : '0' ?></td>
+					<td><a href="<?= site_url('dashboard/survey_response/'.$row['id']) ?>">View Response</a></td>
 				</tr>
 			<?php endforeach; ?>
 			</tbody>

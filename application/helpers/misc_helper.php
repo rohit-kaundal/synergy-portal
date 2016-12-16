@@ -604,3 +604,17 @@ if(!function_exists('getObjectByIdMap')){
         return (object)$objectById;
 	}
 }
+
+
+
+# Functions other than ANGULAR JS surveys
+# starts from here
+
+
+
+
+
+
+
+
+
