@@ -88,7 +88,7 @@
 					<td><?= date('l jS \of F Y h:i:s A', strtotime($row['dateofsurvey']))?></td>
 					<td><?= $row['address']?> - <?= $row['pincode']?></td>
 					<td><?= $row['latitude'] ? $row['latitude'] : '0'?>, <?= $row['longitude'] ? $row['longitude'] : '0' ?></td>
-					<td><a href="<?= site_url('dashboard/survey_response/'.$row['id']) ?>">View Response</a></td>
+					<td><a href="<?= site_url('dashboard/survey_response/'.$row['id']) ?>"><button class="btn-danger">View Response</button></a></td>
 				</tr>
 			<?php endforeach; ?>
 			</tbody>

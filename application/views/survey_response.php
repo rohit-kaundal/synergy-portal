@@ -14,7 +14,7 @@
 <div class="panel panel-primary panel-shadow">
 	<div class="panel-heading">
 		<div class="panel-title">
-			<h3><i class="entypo-clipboard"></i>Response ID #<?= $result[0]['id']?> (<?= $result[0]['title']?></h3>
+			<h3><i class="entypo-clipboard"></i>Response ID #<?= $result[0]['id']?> (<?= $result[0]['title']?>)</h3>
 			<h3><i class="entypo-mobile"></i><?= $result[0]['mobileid']?></h3>
 			<h3><i class="entypo-user"></i><?= $result[0]['fullname']?></h3>
 			<h3><i class="entypo-clock"></i><?= date('l jS \of F Y h:i:s A', strtotime($result[0]['dateofsurvey']))?></h3>

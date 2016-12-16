@@ -250,7 +250,11 @@ if( !function_exists('getHeader') ){
 	}
 }
 
-
+if(!function_exists('getQuestionNumbers')){
+    function getQuestionNumbers($formData){
+        
+    }
+}
 if( !function_exists('getQuestionList') ){
 	function getQuestionList($formData, $copy=false){
 

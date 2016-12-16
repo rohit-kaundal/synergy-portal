@@ -79,13 +79,14 @@ RESP;
 		//$questions = getQuestionWithResponseList(json_decode($manipurData), json_decode($manipurTestResponse));
 		//print_r($questions);
 		//print_r(getResponseSheetRow(json_decode($manipurData), json_decode($manipurTestResponse)));
-		$data = getResponseSheet(json_decode($manipurData), json_decode($manipurTestResponse), true);
+		/*$data = getResponseSheet(json_decode($manipurData), json_decode($manipurTestResponse), true);
 		$questions = $data[0];
 		$answers = $data[1];
 		echo '<h3>Questions :</h3><br/>';
 		print_r($questions);
 		echo '<h3>Answers: </h3>';
-		print_r($answers);
+		print_r($answers);*/
+		print_r(getQuestionList(json_decode($manipurData)));
 
 
 

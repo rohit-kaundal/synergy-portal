@@ -604,6 +604,20 @@ class Dashboard extends CI_Controller {
 		
 		$this->load->view('admin_footer');
 	}
+
+	function report_survey($id=0)
+	{
+		$this->userauth->check_login();
+		
+		$this->load->view('admin_header', ['title'=>'Agent Report', 'effect' => 'page-left-in']);
+		if(!$id){
+			$this->load->view('survey_report');
+		}else{
+			$this->load->view('download_surveyreport', ['id'=>$id]);
+		}
+		
+		$this->load->view('admin_footer');
+	}
 	
 	
 

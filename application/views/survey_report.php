@@ -1,14 +1,14 @@
 <?php
 	//echo '<pre>';
-	$query = $this->db->query('select u.userid, u.mobile, u.fullname, u.gender, u.address, u.pincode, (select count(*) from tblrespondant t where t.userid = u.userid) as survey_count from tbluserdetails u order by survey_count desc;');
+	$query = $this->db->query('select s.id, s.title, s.description, (select count(*) from tblrespondant t where t.surveyid = s.id) as responses from tblsurvey s');
 	$result = $query->result_array();// || array();
-	//print_r($result);
+	//print_r($result);exit;
 	//echo '</pre>';
 ?>
 <div class="panel panel-primary panel-shadow">
 	<div class="panel-heading">
 		<div class="panel-title">
-			<h3><i class="entypo-pencil"></i>Agent Report</h3>
+			<h3><i class="entypo-pencil"></i>Survey Report</h3>
 		</div>
 		
 	</div>
@@ -67,12 +67,9 @@
 			<thead>
 				<tr>
 					
-					<th>Mobile Number</th>
-					<th>Full Name</th>
-					<th>Gender</th>
-					<th>Address</th>
-					
-					<th>Survey Count</th>
+					<th>Survey</th>
+					<th>Description</th>
+					<th>Responses</th>					
 				</tr>
 			</thead>
 			
@@ -80,16 +77,15 @@
 			<?php foreach($result as $row):?>
 				<tr>
 					
-					<td><?= $row['mobile']?></td>
-					<?php if($row['survey_count'] > 0):?>
-						<td><a href="<?=site_url('dashboard/report_agent/'.$row['userid']) ?>"><button class="btn-info"><?= $row['fullname']?></button></a></td>
-					<?php else:?>
-						<td><?= $row['fullname']?></td>
-					<?php endif;?>
 					
-					<td><?= $row['gender']?></td>
-					<td><?= $row['address']?> - <?= $row['pincode']?></td>
-					<td class="<?= ($row['survey_count'] > 0 ? 'text-info': 'text-danger')?>"><?= $row['survey_count']?></td>
+					<td><?= $row['title']?></td>
+					<td><?= $row['description']?></td>
+					
+					<td class="<?= ($row['responses'] > 0 ? 'text-info': 'text-danger')?>"><?= $row['responses']?>
+						<?php if($row['responses'] > 0):?>
+							<a href="<?=site_url('dashboard/report_survey/'.$row['id']) ?>"><button class="btn-info"> Download</button></a>							
+						<?php endif;?>
+					</td>
 				</tr>
 			<?php endforeach; ?>
 			</tbody>

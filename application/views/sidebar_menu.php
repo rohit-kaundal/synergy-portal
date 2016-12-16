@@ -228,7 +228,7 @@
 					</a>
 					<ul>
 						<li>
-							<a href="">
+							<a href="<?= site_url('dashboard/report_survey') ?>">
 									<span class="title">Survey report</span>
 							</a>
 						</li>
